@@ -1,0 +1,38 @@
+# python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+.coverage
+htmlcov/
+
+# tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# sam / aws
+.aws-sam/
+samconfig.toml
+samconfig.toml.local
+
+# secrets / local config
+.env
+.env.*
+!.env.example
+infrastructure/parameters.local.json
+
+# editor / os
+.DS_Store
+.idea/
+.vscode/
+
+# claude-specific scratch
+CLAUDE.md
+.claude/
+
+# screenshots placeholder
+docs/screenshots/*
+!docs/screenshots/.gitkeep
