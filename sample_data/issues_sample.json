@@ -1,0 +1,27 @@
+[
+  {
+    "number": 8,
+    "title": "Add retry handling for calendar sync",
+    "state": "open",
+    "html_url": "https://github.com/example-user/crm-dashboard/issues/8",
+    "created_at": "2026-05-02T10:00:00Z",
+    "updated_at": "2026-05-06T13:20:00Z",
+    "closed_at": null,
+    "labels": [
+      {"name": "bug"},
+      {"name": "backend"}
+    ],
+    "assignee": {"login": "example-user"}
+  },
+  {
+    "number": 9,
+    "title": "Fix installer assignment dropdown",
+    "state": "closed",
+    "html_url": "https://github.com/example-user/crm-dashboard/issues/9",
+    "created_at": "2026-05-01T08:00:00Z",
+    "updated_at": "2026-05-07T11:00:00Z",
+    "closed_at": "2026-05-07T11:00:00Z",
+    "labels": [{"name": "bug"}],
+    "assignee": null
+  }
+]

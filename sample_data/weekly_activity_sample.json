@@ -1,0 +1,87 @@
+[
+  {
+    "activity_id": "commit#example-user/crm-dashboard#abc1234",
+    "activity_type": "commit",
+    "repo": "example-user/crm-dashboard",
+    "activity_date": "2026-05-04",
+    "timestamp": "2026-05-04T14:22:00Z",
+    "title": "fix calendar sync timezone bug",
+    "url": "https://github.com/example-user/crm-dashboard/commit/abc1234",
+    "metadata": {
+      "sha": "abc1234567890abcdef1234567890abcdef12345",
+      "short_sha": "abc1234",
+      "additions": 42,
+      "deletions": 9,
+      "files_changed": 3,
+      "language": "TypeScript"
+    }
+  },
+  {
+    "activity_id": "commit#example-user/crm-dashboard#def4567",
+    "activity_type": "commit",
+    "repo": "example-user/crm-dashboard",
+    "activity_date": "2026-05-05",
+    "timestamp": "2026-05-05T09:10:00Z",
+    "title": "add supabase schema for installer scheduling",
+    "url": "https://github.com/example-user/crm-dashboard/commit/def4567",
+    "metadata": {
+      "sha": "def4567890abcdef1234567890abcdef12345678",
+      "short_sha": "def4567",
+      "additions": 240,
+      "deletions": 0,
+      "files_changed": 6,
+      "language": "TypeScript"
+    }
+  },
+  {
+    "activity_id": "commit#example-user/portfolio-api#aaa1111",
+    "activity_type": "commit",
+    "repo": "example-user/portfolio-api",
+    "activity_date": "2026-05-06",
+    "timestamp": "2026-05-06T17:00:00Z",
+    "title": "add deployment config",
+    "url": "https://github.com/example-user/portfolio-api/commit/aaa1111",
+    "metadata": {
+      "sha": "aaa1111111111111111111111111111111111111",
+      "short_sha": "aaa1111",
+      "additions": 18,
+      "deletions": 2,
+      "files_changed": 2,
+      "language": "Python"
+    }
+  },
+  {
+    "activity_id": "issue#example-user/crm-dashboard#8",
+    "activity_type": "issue",
+    "repo": "example-user/crm-dashboard",
+    "activity_date": "2026-05-06",
+    "timestamp": "2026-05-06T13:20:00Z",
+    "title": "Add retry handling for calendar sync",
+    "url": "https://github.com/example-user/crm-dashboard/issues/8",
+    "metadata": {
+      "number": 8,
+      "state": "open",
+      "created_at": "2026-05-02T10:00:00Z",
+      "closed_at": null,
+      "labels": ["bug", "backend"],
+      "assignee": "example-user"
+    }
+  },
+  {
+    "activity_id": "issue#example-user/crm-dashboard#9",
+    "activity_type": "issue",
+    "repo": "example-user/crm-dashboard",
+    "activity_date": "2026-05-07",
+    "timestamp": "2026-05-07T11:00:00Z",
+    "title": "Fix installer assignment dropdown",
+    "url": "https://github.com/example-user/crm-dashboard/issues/9",
+    "metadata": {
+      "number": 9,
+      "state": "closed",
+      "created_at": "2026-05-01T08:00:00Z",
+      "closed_at": "2026-05-07T11:00:00Z",
+      "labels": ["bug"],
+      "assignee": null
+    }
+  }
+]

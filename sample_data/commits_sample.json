@@ -1,0 +1,26 @@
+[
+  {
+    "sha": "abc1234567890abcdef1234567890abcdef12345",
+    "html_url": "https://github.com/example-user/crm-dashboard/commit/abc1234567890abcdef1234567890abcdef12345",
+    "commit": {
+      "author": {
+        "name": "example-user",
+        "email": "you@example.com",
+        "date": "2026-05-04T14:22:00Z"
+      },
+      "message": "fix calendar sync timezone bug"
+    }
+  },
+  {
+    "sha": "def4567890abcdef1234567890abcdef12345678",
+    "html_url": "https://github.com/example-user/crm-dashboard/commit/def4567890abcdef1234567890abcdef12345678",
+    "commit": {
+      "author": {
+        "name": "example-user",
+        "email": "you@example.com",
+        "date": "2026-05-05T09:10:00Z"
+      },
+      "message": "add supabase schema for installer scheduling"
+    }
+  }
+]
