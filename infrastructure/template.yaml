@@ -1,0 +1,178 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: github-logs - serverless GitHub activity intelligence
+
+Parameters:
+  GitHubUsername:
+    Type: String
+    Description: GitHub login whose activity is collected.
+  GitHubSecretArn:
+    Type: String
+    Description: ARN of Secrets Manager secret holding the GitHub PAT.
+  NotificationEmail:
+    Type: String
+    Description: Email address subscribed to the weekly SNS topic.
+  BedrockModelId:
+    Type: String
+    Description: Bedrock model id for the summarizer (a Claude model in your region).
+  Region:
+    Type: String
+    Default: us-east-1
+
+Globals:
+  Function:
+    Runtime: python3.12
+    MemorySize: 512
+    Timeout: 60
+    Architectures: [arm64]
+    Environment:
+      Variables:
+        LOG_LEVEL: INFO
+        GITHUB_USERNAME: !Ref GitHubUsername
+        ACTIVITY_TABLE: !Ref ActivityTable
+        REPORTS_TABLE: !Ref ReportsTable
+        RAW_ARCHIVE_BUCKET: !Ref RawArchiveBucket
+        REPORTS_BUCKET: !Ref ReportsBucket
+        SNS_TOPIC_ARN: !Ref WeeklyTopic
+        BEDROCK_MODEL_ID: !Ref BedrockModelId
+        GITHUB_SECRET_ARN: !Ref GitHubSecretArn
+
+Resources:
+  ActivityTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: github-logs-activity
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  ReportsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: github-logs-reports
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  RawArchiveBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  ReportsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  WeeklyTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: github-logs-weekly
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref NotificationEmail
+
+  GitHubCollectorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../
+      Handler: lambdas.github_collector_handler.lambda_handler
+      Timeout: 120
+      MemorySize: 512
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ActivityTable
+        - S3WritePolicy:
+            BucketName: !Ref RawArchiveBucket
+        - Statement:
+            - Effect: Allow
+              Action: secretsmanager:GetSecretValue
+              Resource: !Ref GitHubSecretArn
+      Events:
+        Daily:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 23 * * ? *)
+            Name: github-logs-daily-collect
+            Description: Collect GitHub activity nightly at 23:00 UTC.
+
+  WeeklySummaryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../
+      Handler: lambdas.weekly_summary_handler.lambda_handler
+      Timeout: 300
+      MemorySize: 1024
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ActivityTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ReportsTable
+        - S3WritePolicy:
+            BucketName: !Ref ReportsBucket
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt WeeklyTopic.TopicName
+        - Statement:
+            - Effect: Allow
+              Action:
+                - bedrock:InvokeModel
+              Resource: "*"
+      Events:
+        Weekly:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 20 ? * SUN *)
+            Name: github-logs-weekly-summary
+            Description: Produce a weekly summary every Sunday at 20:00 UTC.
+
+Outputs:
+  ActivityTableName:
+    Value: !Ref ActivityTable
+  ReportsTableName:
+    Value: !Ref ReportsTable
+  RawArchiveBucketName:
+    Value: !Ref RawArchiveBucket
+  ReportsBucketName:
+    Value: !Ref ReportsBucket
+  WeeklyTopicArn:
+    Value: !Ref WeeklyTopic
