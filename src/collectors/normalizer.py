@@ -77,3 +77,48 @@ def to_ddb_keys(username: str, record: dict[str, Any]) -> dict[str, str]:
         f"#{record['activity_id'].rsplit('#', 1)[-1]}"
     )
     return {"PK": pk, "SK": sk}
+
+
+def flatten_for_analytics(record: dict[str, Any]) -> dict[str, Any]:
+    """Flatten a normalized activity record into a SQL-friendly shape for Athena.
+
+    Keeps a single schema across commits and issues by promoting metadata fields
+    into typed top-level columns; null for the type that doesn't apply.
+    """
+    base: dict[str, Any] = {
+        "activity_id": record["activity_id"],
+        "activity_type": record["activity_type"],
+        "repo": record["repo"],
+        "activity_date": record["activity_date"],
+        "timestamp": record["timestamp"],
+        "title": record["title"],
+        "url": record.get("url"),
+        "commit_sha": None,
+        "commit_short_sha": None,
+        "commit_additions": None,
+        "commit_deletions": None,
+        "commit_files_changed": None,
+        "commit_language": None,
+        "issue_number": None,
+        "issue_state": None,
+        "issue_created_at": None,
+        "issue_closed_at": None,
+        "issue_labels": None,
+        "issue_assignee": None,
+    }
+    md = record.get("metadata", {}) or {}
+    if record["activity_type"] == "commit":
+        base["commit_sha"] = md.get("sha")
+        base["commit_short_sha"] = md.get("short_sha")
+        base["commit_additions"] = md.get("additions", 0)
+        base["commit_deletions"] = md.get("deletions", 0)
+        base["commit_files_changed"] = md.get("files_changed", 0)
+        base["commit_language"] = md.get("language")
+    elif record["activity_type"] == "issue":
+        base["issue_number"] = md.get("number")
+        base["issue_state"] = md.get("state")
+        base["issue_created_at"] = md.get("created_at")
+        base["issue_closed_at"] = md.get("closed_at")
+        base["issue_labels"] = md.get("labels", [])
+        base["issue_assignee"] = md.get("assignee")
+    return base

@@ -1,7 +1,0 @@
-{
-  "GitHubUsername": "example-user",
-  "GitHubSecretArn": "arn:aws:secretsmanager:us-east-1:000000000000:secret:github-logs/pat-REPLACE",
-  "NotificationEmail": "you@example.com",
-  "BedrockModelId": "REPLACE-with-your-claude-bedrock-model-id",
-  "Region": "us-east-1"
-}

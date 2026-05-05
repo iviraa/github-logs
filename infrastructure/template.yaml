@@ -36,6 +36,8 @@ Globals:
         SNS_TOPIC_ARN: !Ref WeeklyTopic
         BEDROCK_MODEL_ID: !Ref BedrockModelId
         GITHUB_SECRET_ARN: !Ref GitHubSecretArn
+        ATHENA_WORKGROUP: !Ref AnalyticsWorkGroup
+        GLUE_DATABASE: !Ref AnalyticsDatabase
 
 Resources:
   ActivityTable:
@@ -112,8 +114,85 @@ Resources:
         - Protocol: email
           Endpoint: !Ref NotificationEmail
 
+  AnalyticsDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: github_logs
+        Description: Schema for github-logs activity data lake.
+
+  CrawlerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: glue.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
+      Policies:
+        - PolicyName: ReadProcessedTier
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                Resource: !Sub "${RawArchiveBucket.Arn}/processed/*"
+              - Effect: Allow
+                Action:
+                  - s3:ListBucket
+                Resource: !GetAtt RawArchiveBucket.Arn
+                Condition:
+                  StringLike:
+                    s3:prefix:
+                      - "processed/*"
+
+  AnalyticsWorkGroup:
+    Type: AWS::Athena::WorkGroup
+    Properties:
+      Name: github-logs
+      Description: Workgroup for github-logs Athena queries.
+      State: ENABLED
+      WorkGroupConfiguration:
+        EnforceWorkGroupConfiguration: true
+        PublishCloudWatchMetricsEnabled: false
+        BytesScannedCutoffPerQuery: 1073741824  # 1 GiB hard cap per query
+        ResultConfiguration:
+          OutputLocation: !Sub "s3://${RawArchiveBucket}/athena-results/"
+
+  ActivityCrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Name: github-logs-activity-crawler
+      Role: !GetAtt CrawlerRole.Arn
+      DatabaseName: !Ref AnalyticsDatabase
+      Targets:
+        S3Targets:
+          - Path: !Sub "s3://${RawArchiveBucket}/processed/github/activity/"
+      Schedule:
+        ScheduleExpression: cron(0 19 ? * SUN *)
+      SchemaChangePolicy:
+        UpdateBehavior: UPDATE_IN_DATABASE
+        DeleteBehavior: LOG
+      RecrawlPolicy:
+        RecrawlBehavior: CRAWL_EVERYTHING
+      Configuration: |
+        {
+          "Version": 1.0,
+          "CrawlerOutput": {
+            "Partitions": { "AddOrUpdateBehavior": "InheritFromTable" }
+          }
+        }
+
   GitHubCollectorFunction:
     Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: python3.12
     Properties:
       CodeUri: ../
       Handler: lambdas.github_collector_handler.lambda_handler
@@ -138,6 +217,8 @@ Resources:
 
   WeeklySummaryFunction:
     Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: python3.12
     Properties:
       CodeUri: ../
       Handler: lambdas.weekly_summary_handler.lambda_handler
@@ -165,6 +246,58 @@ Resources:
             Name: github-logs-weekly-summary
             Description: Produce a weekly summary every Sunday at 20:00 UTC.
 
+  MonthlySummaryFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: python3.12
+    Properties:
+      CodeUri: ../
+      Handler: lambdas.monthly_summary_handler.lambda_handler
+      Timeout: 600
+      MemorySize: 1024
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ReportsTable
+        - S3WritePolicy:
+            BucketName: !Ref ReportsBucket
+        - S3ReadPolicy:
+            BucketName: !Ref RawArchiveBucket
+        - S3CrudPolicy:
+            BucketName: !Ref RawArchiveBucket
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt WeeklyTopic.TopicName
+        - Statement:
+            - Effect: Allow
+              Action:
+                - bedrock:InvokeModel
+              Resource: "*"
+            - Effect: Allow
+              Action:
+                - athena:StartQueryExecution
+                - athena:StopQueryExecution
+                - athena:GetQueryExecution
+                - athena:GetQueryResults
+                - athena:GetWorkGroup
+              Resource: !Sub "arn:aws:athena:${AWS::Region}:${AWS::AccountId}:workgroup/${AnalyticsWorkGroup}"
+            - Effect: Allow
+              Action:
+                - glue:GetDatabase
+                - glue:GetTable
+                - glue:GetTables
+                - glue:GetPartition
+                - glue:GetPartitions
+              Resource:
+                - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog"
+                - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/${AnalyticsDatabase}"
+                - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/${AnalyticsDatabase}/*"
+      Events:
+        Monthly:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 21 1 * ? *)
+            Name: github-logs-monthly-summary
+            Description: Produce a monthly retrospective on the 1st of each month at 21:00 UTC.
+
 Outputs:
   ActivityTableName:
     Value: !Ref ActivityTable
@@ -174,5 +307,11 @@ Outputs:
     Value: !Ref RawArchiveBucket
   ReportsBucketName:
     Value: !Ref ReportsBucket
+  AnalyticsDatabaseName:
+    Value: !Ref AnalyticsDatabase
+  ActivityCrawlerName:
+    Value: !Ref ActivityCrawler
+  AnalyticsWorkGroupName:
+    Value: !Ref AnalyticsWorkGroup
   WeeklyTopicArn:
     Value: !Ref WeeklyTopic

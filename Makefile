@@ -15,7 +15,7 @@ build:
 	sam build -t infrastructure/template.yaml
 
 deploy: build
-	sam deploy -t infrastructure/template.yaml \
+	sam deploy -t .aws-sam/build/template.yaml \
 		--stack-name github-logs \
 		--capabilities CAPABILITY_IAM \
 		--resolve-s3 \

@@ -12,7 +12,7 @@ from src.common.config import github_token, load
 from src.common.dates import iso_z, utc_now
 from src.common.logger import get_logger, log
 from src.storage.dynamodb_store import ActivityStore
-from src.storage.s3_archive import RawArchive
+from src.storage.s3_archive import ProcessedArchive, RawArchive
 
 logger = get_logger(__name__)
 
@@ -28,6 +28,7 @@ def lambda_handler(event: dict[str, Any], _context: object) -> dict[str, Any]:
 
     activity = ActivityStore(config.activity_table)
     archive = RawArchive(config.raw_archive_bucket)
+    processed = ProcessedArchive(config.raw_archive_bucket)
 
     total_commits = 0
     total_issues = 0
@@ -58,9 +59,9 @@ def lambda_handler(event: dict[str, Any], _context: object) -> dict[str, Any]:
                 )
             issue_records = [normalize_issue(full_name, i) for i in issues_raw]
 
-            written = activity.put_activity_batch(
-                config.github_username, [*commit_records, *issue_records]
-            )
+            all_records = [*commit_records, *issue_records]
+            written = activity.put_activity_batch(config.github_username, all_records)
+            processed_keys = processed.put_records(all_records)
             total_commits += len(commit_records)
             total_issues += len(issue_records)
             log(
@@ -71,6 +72,7 @@ def lambda_handler(event: dict[str, Any], _context: object) -> dict[str, Any]:
                 commits=len(commit_records),
                 issues=len(issue_records),
                 items_written=written,
+                processed_partitions=len(processed_keys),
             )
 
     return {

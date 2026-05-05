@@ -1,81 +1,72 @@
 # github-logs
 
-Serverless GitHub activity intelligence on AWS. Collects your commit/issue/repo
-activity daily, stores normalized records in DynamoDB, and uses Amazon Bedrock
-to generate a structured weekly engineering report delivered by email.
+Collects your commit/issue/repo activity daily, stores normalized records
+in DynamoDB, and uses Amazon Bedrock to generate a structured weekly
+engineering report delivered by email. A separate monthly retrospective
+runs Athena queries over a partitioned S3 data lake for longer-horizon
+analytics.
 
-## Architecture
+## Stack
 
-```
-EventBridge (daily 23:00 UTC) ─▶ github_collector_handler (Lambda)
-                                         │
-                                         ├─▶ GitHub REST API
-                                         ├─▶ DynamoDB: DeveloperActivity
-                                         └─▶ S3: raw archive (partitioned)
+| Layer | Service |
+|---|---|
+| Triggers | EventBridge |
+| Compute | Lambda (Python 3.12, arm64) |
+| Operational store | DynamoDB |
+| Data lake | S3 (Hive-partitioned) |
+| Schema discovery | Glue Crawler + Glue Data Catalog |
+| Analytics | Athena |
+| LLM | Bedrock (Claude Haiku) |
+| Auth | Secrets Manager |
+| Notification | SNS + email subscription |
+| IaC | AWS SAM |
 
-EventBridge (Sun 20:00 UTC)   ─▶ weekly_summary_handler (Lambda)
-                                         │
-                                         ├─▶ DynamoDB: DeveloperActivity (query)
-                                         ├─▶ Amazon Bedrock (Claude)
-                                         ├─▶ DynamoDB: GeneratedReports
-                                         ├─▶ S3: reports (json + md)
-                                         └─▶ SNS: email summary
-```
-
-See `docs/architecture.md` for the long form.
-
-## Layout
+## Repo layout
 
 ```
-src/                Python modules (imported by Lambda handlers)
-  collectors/       GitHub API fetch + normalization
-  storage/          DynamoDB and S3 access
-  summaries/        Prompt building, Bedrock invocation, formatting
-  notifications/    SNS email publisher
-  common/           Config, logger, date helpers
-lambdas/            Lambda entry points (handlers)
-infrastructure/     SAM template + parameters
-sample_data/        Fixture JSON for prompt iteration
+src/
+  collectors/      GitHub fetch + normalization
+  storage/         DynamoDB, S3, Athena access
+  summaries/       Prompt builders, Bedrock client, formatters, orchestrators
+  notifications/   SNS publisher
+  common/          Config, logger, date helpers
+lambdas/           Lambda entry points
+infrastructure/    SAM template + parameters
+scripts/           One-shot utilities
+sample_data/       Fixture JSON for prompt iteration
 ```
 
 ## Local setup
 
 ```sh
-python -m venv .venv && source .venv/bin/activate
+python3.12 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt -r requirements-dev.txt
-cp .env.example .env   # then fill in values
-make lint
+cp infrastructure/parameters.example.json infrastructure/parameters.json
+# fill in your values; parameters.json is gitignored
 ```
 
 ## Deploy
 
-Prereqs: AWS CLI configured, SAM CLI installed, a GitHub PAT stored in Secrets
-Manager (the secret ARN goes into `infrastructure/parameters.json`).
+Prereqs: AWS CLI configured, SAM CLI installed, GitHub PAT stored in
+Secrets Manager, Bedrock inference profile granted in your region.
 
 ```sh
-sam build -t infrastructure/template.yaml
-sam deploy -t infrastructure/template.yaml \
-  --parameter-overrides $(cat infrastructure/parameters.json | jq -r 'to_entries | map("\(.key)=\(.value)") | join(" ")') \
-  --capabilities CAPABILITY_IAM \
-  --stack-name github-logs \
-  --resolve-s3
+make deploy
 ```
 
-After first deploy, confirm the SNS email subscription that arrives at the
-configured email address.
+After the first deploy, confirm the SNS subscription email AWS sends to the
+address in `parameters.json`.
 
 ## Configuration
 
-Edit `infrastructure/parameters.json`:
+`infrastructure/parameters.json`:
 
 | Key | Meaning |
 |---|---|
 | `GitHubUsername` | Your GitHub login |
-| `GitHubSecretArn` | ARN of Secrets Manager secret holding the PAT |
-| `NotificationEmail` | Address that receives the weekly email |
-| `BedrockModelId` | Bedrock model id, e.g. a Claude Sonnet/Opus id in your region |
-| `Region` | AWS region for deploy |
+| `GitHubSecretArn` | ARN of the Secrets Manager secret holding the PAT |
+| `NotificationEmail` | Inbox that receives reports |
+| `BedrockModelId` | Cross-region inference profile id |
+| `Region` | AWS region for the stack |
 
-## Status
-
-MVP scaffold. See `docs/architecture.md` for what is built vs planned.

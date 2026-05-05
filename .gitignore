@@ -22,7 +22,7 @@ samconfig.toml.local
 .env
 .env.*
 !.env.example
-infrastructure/parameters.local.json
+infrastructure/parameters.json
 
 # editor / os
 .DS_Store
@@ -32,6 +32,9 @@ infrastructure/parameters.local.json
 # claude-specific scratch
 CLAUDE.md
 .claude/
+
+# lambda invoke artifacts
+out.json
 
 # screenshots placeholder
 docs/screenshots/*
