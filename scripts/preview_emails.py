@@ -47,13 +47,13 @@ WEEKLY_SAMPLE: dict = {
             {
                 "name": "iviraa/github-logs",
                 "summary": (
-                    "Added the analytics tier (processed S3 zone, Glue "
+                    "Added the analytics layer (processed S3 prefix, Glue "
                     "Crawler, Athena workgroup) plus a monthly retrospective "
                     "Lambda that queries Athena. Replaced the SNS plain-text "
-                    "email pipeline with SES + Jinja2 HTML templates."
+                    "email pipeline with SES and Jinja2 HTML templates."
                 ),
                 "notable_work": [
-                    "Wrote flattened activity records to a partitioned processed S3 tier",
+                    "Wrote flattened activity records to a partitioned processed S3 prefix",
                     "Added Glue database, crawler, and Athena workgroup via SAM",
                     "Implemented monthly retrospective Lambda with Athena-backed aggregates",
                     "Replaced SNS plain-text emails with SES HTML emails",
@@ -65,6 +65,9 @@ WEEKLY_SAMPLE: dict = {
                 "suggested_next_steps": [
                     "Add Athena-enriched aggregates to the weekly summary prompt",
                     "Trim docs/scripts/Makefile out of the deployment package",
+                ],
+                "actionable_issues": [
+                    "Add Athena-enriched aggregates to the weekly summary prompt",
                 ],
             }
         ],
@@ -126,7 +129,11 @@ MONTHLY_SAMPLE: dict = {
                     "SES HTML email pipeline",
                 ],
                 "open_threads": [
-                    "Tier-2 features (per-repo GSI, TODO/FIXME scanner)",
+                    "Per-repo GSI on the activity table",
+                    "TODO/FIXME scanner across owned repos",
+                    "Tighter Lambda zip via .samignore",
+                ],
+                "actionable_issues": [
                     "Tighter Lambda zip via .samignore",
                 ],
             }

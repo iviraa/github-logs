@@ -4,5 +4,8 @@
   "NotificationEmail": "you@example.com",
   "SenderEmail": "you@example.com",
   "BedrockModelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+  "CreateIssues": "false",
+  "PrivateReposOnly": "true",
+  "SkipIssueRepos": "",
   "Region": "us-east-2"
 }

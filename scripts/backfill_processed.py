@@ -1,6 +1,6 @@
 """One-shot: read every activity record out of DynamoDB and write it to the
-processed S3 tier. Use this once after first deploy; regular collector runs
-keep the tier in sync going forward.
+processed S3 prefix. Use this once after first deploy; regular collector
+runs keep it in sync going forward.
 
 Usage:
     cd github-logs

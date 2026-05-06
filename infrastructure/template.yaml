@@ -18,6 +18,20 @@ Parameters:
   BedrockModelId:
     Type: String
     Description: Bedrock model id for the summarizer (a Claude model in your region).
+  CreateIssues:
+    Type: String
+    Default: "false"
+    AllowedValues: ["true", "false"]
+    Description: When true, weekly and monthly reporters open GitHub issues for each next-step item.
+  PrivateReposOnly:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+    Description: When true, issue creation is restricted to private repositories only.
+  SkipIssueRepos:
+    Type: String
+    Default: ""
+    Description: "Comma-separated list of owner/repo names to skip when creating issues."
   Region:
     Type: String
     Default: us-east-1
@@ -42,6 +56,9 @@ Globals:
         GITHUB_SECRET_ARN: !Ref GitHubSecretArn
         ATHENA_WORKGROUP: !Ref AnalyticsWorkGroup
         GLUE_DATABASE: !Ref AnalyticsDatabase
+        CREATE_ISSUES: !Ref CreateIssues
+        PRIVATE_REPOS_ONLY: !Ref PrivateReposOnly
+        SKIP_ISSUE_REPOS: !Ref SkipIssueRepos
 
 Resources:
   ActivityTable:
@@ -134,7 +151,7 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
       Policies:
-        - PolicyName: ReadProcessedTier
+        - PolicyName: ReadProcessedPrefix
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
@@ -232,6 +249,9 @@ Resources:
             BucketName: !Ref ReportsBucket
         - Statement:
             - Effect: Allow
+              Action: secretsmanager:GetSecretValue
+              Resource: !Ref GitHubSecretArn
+            - Effect: Allow
               Action:
                 - bedrock:InvokeModel
               Resource: "*"
@@ -269,6 +289,9 @@ Resources:
         - S3CrudPolicy:
             BucketName: !Ref RawArchiveBucket
         - Statement:
+            - Effect: Allow
+              Action: secretsmanager:GetSecretValue
+              Resource: !Ref GitHubSecretArn
             - Effect: Allow
               Action:
                 - bedrock:InvokeModel

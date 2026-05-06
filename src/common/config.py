@@ -22,6 +22,9 @@ class Config:
     sender_email: str
     recipient_email: str
     region: str
+    create_issues: bool
+    skip_issue_repos: tuple[str, ...]
+    private_repos_only: bool
 
 
 def load() -> Config:
@@ -36,6 +39,13 @@ def load() -> Config:
         sender_email=_require("SENDER_EMAIL"),
         recipient_email=_require("RECIPIENT_EMAIL"),
         region=os.environ.get("AWS_REGION", "us-east-1"),
+        create_issues=os.environ.get("CREATE_ISSUES", "false").strip().lower() == "true",
+        skip_issue_repos=tuple(
+            s.strip()
+            for s in os.environ.get("SKIP_ISSUE_REPOS", "").split(",")
+            if s.strip()
+        ),
+        private_repos_only=os.environ.get("PRIVATE_REPOS_ONLY", "true").strip().lower() == "true",
     )
 
 

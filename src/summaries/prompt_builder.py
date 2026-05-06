@@ -23,7 +23,8 @@ Return valid JSON only with this structure:
       "summary": "...",
       "notable_work": ["...", "..."],
       "risks_or_gaps": ["...", "..."],
-      "suggested_next_steps": ["...", "..."]
+      "suggested_next_steps": ["...", "..."],
+      "actionable_issues": ["..."]
     }
   ],
   "resume_bullets": ["...", "..."],
@@ -39,6 +40,14 @@ Return valid JSON only with this structure:
 Rules:
 - "headline" is one short sentence (max 70 characters), the punchline of the week.
 - "overview" is 2-3 sentences expanding on the headline with concrete detail.
+- "actionable_issues" is a STRICT SUBSET of "suggested_next_steps". Apply tech-lead
+  judgment: only include an item if it describes a concrete unit of work that fits
+  in a single pull request, has a clear acceptance criterion, and is genuinely
+  worth tracking as a discrete issue. SKIP items that are vague, multi-week
+  projects, generic observations, recommendations to "consider X", documentation
+  housekeeping, or trivial notes that a developer would not want as a tracked
+  ticket. Quality over quantity. An empty array is the correct answer when
+  nothing qualifies.
 - Do not exaggerate.
 - Do not claim production impact unless present in the data.
 - Convert vague commit messages into clear but honest engineering descriptions.

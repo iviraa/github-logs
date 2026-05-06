@@ -19,7 +19,7 @@ deploy: build
 		--stack-name github-logs \
 		--capabilities CAPABILITY_IAM \
 		--resolve-s3 \
-		--parameter-overrides $$(jq -r 'to_entries | map("\(.key)=\(.value)") | join(" ")' infrastructure/parameters.json)
+		--parameter-overrides $$(jq -r 'to_entries | map(select(.value != "")) | map("\(.key)=\(.value)") | join(" ")' infrastructure/parameters.json)
 
 invoke-collector:
 	sam local invoke GitHubCollectorFunction \

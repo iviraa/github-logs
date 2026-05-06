@@ -22,7 +22,8 @@ Return valid JSON only with this structure:
       "name": "...",
       "summary": "...",
       "what_shipped": ["...", "..."],
-      "open_threads": ["...", "..."]
+      "open_threads": ["...", "..."],
+      "actionable_issues": ["..."]
     }
   ],
   "month_over_month": {
@@ -36,6 +37,12 @@ Return valid JSON only with this structure:
 }
 
 Rules:
+- "actionable_issues" is a STRICT SUBSET of "open_threads". Apply tech-lead
+  judgment: only include an item if it describes a concrete unit of work that
+  fits in a single pull request, has a clear acceptance criterion, and is
+  genuinely worth tracking as a discrete issue. SKIP items that are vague,
+  multi-week projects, generic observations, or trivial notes. Quality over
+  quantity. An empty array is the correct answer when nothing qualifies.
 - Do not exaggerate or claim production impact unless it appears in the data.
 - If there are zero commits, say so plainly; don't fabricate work.
 - Resume bullets must be grounded in repo names and themes from the data only.

@@ -39,3 +39,6 @@ out.json
 # screenshots placeholder
 docs/screenshots/*
 !docs/screenshots/.gitkeep
+
+# email previews (generated locally by scripts/preview_emails.py)
+docs/email_preview/

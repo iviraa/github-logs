@@ -17,6 +17,7 @@ from src.summaries.monthly_prompt_builder import (
     MONTHLY_SYSTEM_PROMPT,
     build_user_payload,
 )
+from src.summaries.summary_generator import _create_issues_from_repos
 
 logger = get_logger(__name__)
 
@@ -89,6 +90,11 @@ def generate_monthly(
         {"commits": metrics.get("commits", 0), "issues": metrics.get("issues", 0)},
     )
 
+    issues_created = _create_issues_from_repos(
+        config,
+        report.get("by_repo") or [],
+    )
+
     return {
         "status": "ok",
         "month": year_month,
@@ -96,6 +102,7 @@ def generate_monthly(
         "markdown": markdown,
         "report_json_s3_key": json_key,
         "report_markdown_s3_key": md_key,
+        "issues_created": issues_created,
     }
 
 
