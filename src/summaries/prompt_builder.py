@@ -53,7 +53,9 @@ Rules:
 - Convert vague commit messages into clear but honest engineering descriptions.
 - Mention uncertainty when the commit message is unclear.
 - Keep resume bullets truthful and based only on the activity.
-- Do NOT use em dashes (—) anywhere. Use commas, periods, parentheses, or semicolons in their place. This applies to every string field, including overview, summary, and bullets.
+- Do NOT use em dashes (—) anywhere. Use commas, periods, parentheses, or
+  semicolons in their place. This applies to every string field, including
+  overview, summary, and bullets.
 - Output only valid JSON. No prose, no code fences.
 """
 

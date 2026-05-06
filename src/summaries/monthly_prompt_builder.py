@@ -46,7 +46,9 @@ Rules:
 - Do not exaggerate or claim production impact unless it appears in the data.
 - If there are zero commits, say so plainly; don't fabricate work.
 - Resume bullets must be grounded in repo names and themes from the data only.
-- Do NOT use em dashes (—) anywhere. Use commas, periods, parentheses, or semicolons in their place. This applies to every string field, including headline, summary, narrative, and bullets.
+- Do NOT use em dashes (—) anywhere. Use commas, periods, parentheses, or
+  semicolons in their place. This applies to every string field, including
+  headline, summary, narrative, and bullets.
 - Output valid JSON. No prose, no code fences.
 """
 

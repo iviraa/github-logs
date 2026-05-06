@@ -20,10 +20,7 @@ def lambda_handler(event: dict[str, Any], _context: object) -> dict[str, Any]:
     config = load()
 
     end_str = event.get("end_date")
-    if end_str:
-        end = date.fromisoformat(end_str)
-    else:
-        end = utc_now().date()
+    end = date.fromisoformat(end_str) if end_str else utc_now().date()
     start = event.get("start_date")
     if start:
         start_d = date.fromisoformat(start)

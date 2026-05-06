@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import calendar
 import logging
-from datetime import date
 from typing import Any
 
 from src.common.config import Config
