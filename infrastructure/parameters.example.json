@@ -2,6 +2,7 @@
   "GitHubUsername": "your-github-login",
   "GitHubSecretArn": "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:github-logs/pat-XXXXXX",
   "NotificationEmail": "you@example.com",
-  "BedrockModelId": "anthropic.claude-haiku-4-5-20251001-v1:0",
+  "SenderEmail": "you@example.com",
+  "BedrockModelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "Region": "us-east-2"
 }

@@ -11,7 +11,10 @@ Parameters:
     Description: ARN of Secrets Manager secret holding the GitHub PAT.
   NotificationEmail:
     Type: String
-    Description: Email address subscribed to the weekly SNS topic.
+    Description: "Recipient email address (SES To: address)."
+  SenderEmail:
+    Type: String
+    Description: "Sender email address (SES From: address). Must be verified in SES."
   BedrockModelId:
     Type: String
     Description: Bedrock model id for the summarizer (a Claude model in your region).
@@ -33,7 +36,8 @@ Globals:
         REPORTS_TABLE: !Ref ReportsTable
         RAW_ARCHIVE_BUCKET: !Ref RawArchiveBucket
         REPORTS_BUCKET: !Ref ReportsBucket
-        SNS_TOPIC_ARN: !Ref WeeklyTopic
+        SENDER_EMAIL: !Ref SenderEmail
+        RECIPIENT_EMAIL: !Ref NotificationEmail
         BEDROCK_MODEL_ID: !Ref BedrockModelId
         GITHUB_SECRET_ARN: !Ref GitHubSecretArn
         ATHENA_WORKGROUP: !Ref AnalyticsWorkGroup
@@ -106,13 +110,8 @@ Resources:
         IgnorePublicAcls: true
         RestrictPublicBuckets: true
 
-  WeeklyTopic:
-    Type: AWS::SNS::Topic
-    Properties:
-      TopicName: github-logs-weekly
-      Subscription:
-        - Protocol: email
-          Endpoint: !Ref NotificationEmail
+  # Note: the SES sender identity for ${SenderEmail} must be verified in the
+  # SES console before the first deploy. CloudFormation does not manage it.
 
   AnalyticsDatabase:
     Type: AWS::Glue::Database
@@ -231,13 +230,18 @@ Resources:
             TableName: !Ref ReportsTable
         - S3WritePolicy:
             BucketName: !Ref ReportsBucket
-        - SNSPublishMessagePolicy:
-            TopicName: !GetAtt WeeklyTopic.TopicName
         - Statement:
             - Effect: Allow
               Action:
                 - bedrock:InvokeModel
               Resource: "*"
+            - Effect: Allow
+              Action:
+                - ses:SendEmail
+                - ses:SendRawEmail
+              Resource:
+                - !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/${SenderEmail}"
+                - !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:configuration-set/*"
       Events:
         Weekly:
           Type: Schedule
@@ -264,13 +268,18 @@ Resources:
             BucketName: !Ref RawArchiveBucket
         - S3CrudPolicy:
             BucketName: !Ref RawArchiveBucket
-        - SNSPublishMessagePolicy:
-            TopicName: !GetAtt WeeklyTopic.TopicName
         - Statement:
             - Effect: Allow
               Action:
                 - bedrock:InvokeModel
               Resource: "*"
+            - Effect: Allow
+              Action:
+                - ses:SendEmail
+                - ses:SendRawEmail
+              Resource:
+                - !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/${SenderEmail}"
+                - !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:configuration-set/*"
             - Effect: Allow
               Action:
                 - athena:StartQueryExecution
@@ -313,5 +322,3 @@ Outputs:
     Value: !Ref ActivityCrawler
   AnalyticsWorkGroupName:
     Value: !Ref AnalyticsWorkGroup
-  WeeklyTopicArn:
-    Value: !Ref WeeklyTopic

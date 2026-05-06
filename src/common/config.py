@@ -17,9 +17,10 @@ class Config:
     reports_table: str
     raw_archive_bucket: str
     reports_bucket: str
-    sns_topic_arn: str
     bedrock_model_id: str
     github_secret_arn: str
+    sender_email: str
+    recipient_email: str
     region: str
 
 
@@ -30,9 +31,10 @@ def load() -> Config:
         reports_table=_require("REPORTS_TABLE"),
         raw_archive_bucket=_require("RAW_ARCHIVE_BUCKET"),
         reports_bucket=_require("REPORTS_BUCKET"),
-        sns_topic_arn=_require("SNS_TOPIC_ARN"),
         bedrock_model_id=_require("BEDROCK_MODEL_ID"),
         github_secret_arn=_require("GITHUB_SECRET_ARN"),
+        sender_email=_require("SENDER_EMAIL"),
+        recipient_email=_require("RECIPIENT_EMAIL"),
         region=os.environ.get("AWS_REGION", "us-east-1"),
     )
 

@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
+<title>{{ subject }}</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!--[if mso]><style>body, table, td { font-family: 'Segoe UI', Arial, sans-serif !important; }</style><![endif]-->
+<style>
+@media only screen and (max-width: 480px) {
+  .container-600 { width: 100% !important; }
+  .pad-mobile { padding: 32px 20px !important; }
+  .pad-mobile-h { padding-left: 20px !important; padding-right: 20px !important; }
+  .display-headline { font-size: 30px !important; line-height: 34px !important; letter-spacing: -1.2px !important; }
+  .heading { font-size: 22px !important; line-height: 26px !important; letter-spacing: -0.88px !important; }
+  .delta-num { font-size: 44px !important; line-height: 48px !important; letter-spacing: -1.76px !important; }
+  .mom-pad { padding: 20px 18px !important; }
+  .mom-side { padding: 20px 0 20px 16px !important; }
+  .mom-num-secondary { font-size: 18px !important; line-height: 22px !important; letter-spacing: -0.72px !important; }
+}
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#F8F8F8;-webkit-font-smoothing:antialiased;">
+<!-- preheader -->
+<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#F8F8F8;opacity:0;">
+{% if status == 'no_activity' %}No tracked GitHub activity for this month.{% else %}{{ report.headline or '' }}{% endif %}
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F8F8F8;">
+<tr>
+<td align="center" style="padding:32px 16px 56px;">
+<table role="presentation" width="600" class="container-600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;">
+
+<!-- Header band -->
+<tr>
+<td style="background-color:#EFEFEF;padding:16px 24px;border-radius:16px 16px 0 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td align="left" style="font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:14px;font-weight:500;color:#000000;letter-spacing:-0.2px;">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAANTSURBVHgBvVeNTdtAFH7vbCilUptuYFQihUhNzQQJEzSZoGSChgkIEwATNJ0AmICM4ISKWCKoHiGtVDUCn1/v2cRx4nNIcNRPgpzvnd/fvT8jLAnLsgrGVqEOQlaR0AYECwgKIRFhpNYeITkQYFeOf195njdahi8+K7hUsgzcaCPi51jgElDKdGTweOK5rgcvUYAtNl+/PVbLFuSBoDP/j3Hiec5oaQUiqzevFdGCNYAAPEkPBzpviPmNYrlsr1M4g3kxz2KxbGtoU6zb8nnoPBF7IIzyOeH8gvp/Gf2uCJUZRNRRK2e6FXnCsuxCSgEOuJTlBO3h4KZxP+jvKGbNWBFOu5AxdeO/aO9JMBwOb/vv792bJlBwNKsXWOYbeZx4jlxv4ubPlBG+2L+7c2ILLFtpPh4XslLLKtkWjGGUjHjeMzFI8fbpYYf5mPzAea5j+GjATOp4Tsg4s8B4ruPBkjDEBnuhKdgqBPyiPQSyBjlhZgS0qqZ1jgVhjGVddyCMWDC6kBP+FjgZQaxKu6wLFQU10GvQXsWlWeBrQwqaeqqoClXjP+lIciyuYE0Yuj+mWZIACrI5Da15Arssq3bngAdpQZZYpcPlApHOoIKA/wVEraFCezdhZbbX6xkCW7M7Yg94uvPGtqzCmrBbsmtaAoInKICelkY5B5EECOWhdj9AR0TNRKtCbXevkluJ4l7la1alZdlCbhmXujh4wuluuXIMOYSrlD7LonOtCbvhh71KRy0iLQlOwukW8HTSnrkuKFedEYne0HW6sEho0bbBDKqEcJgReJEYws6922s+teNpywzrtqQjuW10zYfgOs0EL4eDXkPHdLf88UJdeB2WgE9ih0t9WAd4oQSfh+yVPmjgN+77fiAaqUZC8jyTa0DZtCQLJWvSZ+JCJF+JdkIYj2ctPiRJHPALPF4p5VphXc/AIlpCuCf/ivbkeW4otdXMFsRzIfq+mohuHVgBKnNooXBlULLLpr4LeCwPyLyIA1B94QhCJyDxS2Dw7m7QP3+JAmEgo2goe2YMyvgwmfVEEsNBH1dVQGf5BNpmxAd5EuaUhJzg+FF3vp813CzshkO33+Z0UUy+w7LgohaO5tjhd5UhrbXMFtwdeXx/9py6vlU66T98qp4a9HCubgAAAABJRU5ErkJggg==" alt="GitHub" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:8px;border:0;" />github-logs
+</td>
+<td align="right" style="font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">
+Monthly retro
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<!-- Spectrum strip -->
+<tr>
+<td height="6" style="height:6px;line-height:6px;font-size:0;background:linear-gradient(90deg,#C679C4 0%,#FA3D1D 25%,#FFB005 50%,#E1E1FE 75%,#0358F7 100%);">&nbsp;</td>
+</tr>
+
+{% if status == 'no_activity' %}
+
+<!-- Empty state -->
+<tr>
+<td class="pad-mobile" style="padding:48px 40px;background-color:#FFFFFF;border-radius:0 0 16px 16px;">
+<p style="margin:0 0 20px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">
+Engineering retrospective &nbsp;&middot;&nbsp; {{ period }}
+</p>
+<p style="margin:0;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:18px;line-height:28px;font-weight:300;color:#636363;">
+No tracked GitHub activity for this month.
+</p>
+</td>
+</tr>
+
+{% else %}
+
+<!-- Hero -->
+<tr>
+<td class="pad-mobile" style="padding:48px 40px 40px;background-color:#FFFFFF;">
+<p style="margin:0 0 20px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">
+Engineering retrospective &nbsp;&middot;&nbsp; {{ period }}
+</p>
+{% if report.headline %}
+<h1 class="display-headline" style="margin:0 0 20px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:40px;line-height:44px;font-weight:300;letter-spacing:-1.6px;color:#000000;">{{ report.headline }}</h1>
+{% endif %}
+{% set mom_narrative = (report.month_over_month or {}).narrative %}
+{% if mom_narrative %}
+<p style="margin:0;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:16px;line-height:26px;font-weight:400;color:#636363;">{{ mom_narrative }}</p>
+{% endif %}
+</td>
+</tr>
+
+{% if report.themes %}
+<!-- Themes -->
+<tr>
+<td class="pad-mobile" style="padding:8px 40px 8px;background-color:#FFFFFF;">
+<p style="margin:0 0 16px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">
+Themes
+</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+{% for theme in report.themes %}
+<tr><td style="padding:8px 0;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:16px;line-height:24px;color:#000000;"><span style="color:#AEAEAE;">{{ '%02d' | format(loop.index) }}&nbsp;&nbsp;</span>{{ theme }}</td></tr>
+{% endfor %}
+</table>
+</td>
+</tr>
+{% endif %}
+
+<!-- Month over month -->
+{% set mom = report.month_over_month or {} %}
+<tr>
+<td class="pad-mobile" style="padding:40px 40px 8px;background-color:#FFFFFF;">
+<p style="margin:0 0 20px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">
+Month over month
+</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F8F8F8;border-radius:12px;">
+<tr>
+{% set pct = mom.commit_change_pct|default(none) %}
+<td class="mom-pad" valign="top" style="padding:28px 24px;width:50%;">
+{% if pct is not none %}
+{% set pct_int = pct|int %}
+{% set sign = '+' if pct_int >= 0 else '' %}
+<div class="delta-num" style="font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:64px;line-height:64px;font-weight:300;letter-spacing:-2.56px;color:#000000;">{{ sign }}{{ pct_int }}<span style="font-size:32px;letter-spacing:-1.28px;color:#959595;">%</span></div>
+<div style="margin-top:10px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">Commits vs. prior month</div>
+{% else %}
+<div class="delta-num" style="font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:64px;line-height:64px;font-weight:300;letter-spacing:-2.56px;color:#000000;">{{ mom.commits_this_month or 0 }}</div>
+<div style="margin-top:10px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">Commits this month</div>
+{% endif %}
+</td>
+<td class="mom-side" valign="top" style="padding:28px 24px 28px 0;width:50%;border-left:1px solid #EFEFEF;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td style="padding:0 0 14px 24px;font-family:'DM Sans',Helvetica,Arial,sans-serif;">
+<div style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">This month</div>
+<div class="mom-num-secondary" style="margin-top:4px;font-size:24px;line-height:28px;font-weight:300;letter-spacing:-0.96px;color:#000000;">{{ mom.commits_this_month or 0 }} commits</div>
+</td>
+</tr>
+<tr>
+<td style="padding:0 0 0 24px;font-family:'DM Sans',Helvetica,Arial,sans-serif;">
+<div style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">Prior month</div>
+<div class="mom-num-secondary" style="margin-top:4px;font-size:24px;line-height:28px;font-weight:300;letter-spacing:-0.96px;color:#AEAEAE;">{{ mom.commits_prior_month or 0 }} commits</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+{% if report.by_repo %}
+<!-- By repo heading -->
+<tr>
+<td class="pad-mobile" style="padding:48px 40px 24px;background-color:#FFFFFF;">
+<h2 class="heading" style="margin:0;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:28px;line-height:32px;font-weight:300;letter-spacing:-1.12px;color:#000000;">
+By repository
+</h2>
+</td>
+</tr>
+
+{% for repo in report.by_repo %}
+<!-- Repo card -->
+<tr>
+<td class="pad-mobile-h" style="padding:0 40px 16px;background-color:#FFFFFF;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F8F8F8;border-radius:12px;">
+<tr>
+<td style="padding:24px 24px;">
+<div style="font-family:'DM Mono','SF Mono',Menlo,Consolas,monospace;font-size:13px;font-weight:500;color:#000000;letter-spacing:-0.2px;">{{ repo.name }}</div>
+{% if repo.summary %}
+<p style="margin:14px 0 0;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:24px;color:#636363;">{{ repo.summary }}</p>
+{% endif %}
+</td>
+</tr>
+</table>
+</td>
+</tr>
+{% endfor %}
+{% endif %}
+
+<!-- Next month focus -->
+<tr>
+<td class="pad-mobile" style="padding:32px 40px 48px;background-color:#FFFFFF;border-radius:0 0 16px 16px;">
+{% if report.next_month_focus %}
+<p style="margin:0 0 16px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">
+Next month
+</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+{% for item in report.next_month_focus %}
+<tr><td style="padding:6px 0;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:16px;line-height:24px;color:#000000;"><span style="color:#AEAEAE;">{{ '%02d' | format(loop.index) }}&nbsp;&nbsp;</span>{{ item }}</td></tr>
+{% endfor %}
+</table>
+{% endif %}
+</td>
+</tr>
+
+{% endif %}
+
+<!-- Footer -->
+<tr>
+<td style="padding:32px 24px 8px;text-align:center;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:12px;line-height:18px;color:#959595;">
+<p style="margin:0 0 8px;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;font-size:11px;">
+Generated {{ generated_at }}
+</p>
+<p style="margin:0;">github-logs &middot; personal engineering log</p>
+</td>
+</tr>
+
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>

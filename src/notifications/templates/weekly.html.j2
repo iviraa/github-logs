@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
+<title>{{ subject }}</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!--[if mso]><style>body, table, td { font-family: 'Segoe UI', Arial, sans-serif !important; }</style><![endif]-->
+<style>
+@media only screen and (max-width: 480px) {
+  .container-600 { width: 100% !important; }
+  .pad-mobile { padding: 32px 20px !important; }
+  .pad-mobile-h { padding-left: 20px !important; padding-right: 20px !important; }
+  .display-headline { font-size: 30px !important; line-height: 34px !important; letter-spacing: -1.2px !important; }
+  .heading { font-size: 22px !important; line-height: 26px !important; letter-spacing: -0.88px !important; }
+  .metric-cell { padding: 16px 0 !important; }
+  .metric-cell-pad { padding: 16px 0 16px 12px !important; }
+  .metric-num { font-size: 26px !important; line-height: 30px !important; letter-spacing: -1.04px !important; }
+  .metric-label { font-size: 9px !important; letter-spacing: 0.14em !important; }
+}
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#F8F8F8;-webkit-font-smoothing:antialiased;">
+<!-- preheader -->
+<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#F8F8F8;opacity:0;">
+{% if status == 'no_activity' %}No tracked GitHub activity for this week.{% else %}{{ report.headline or report.overview or '' }}{% endif %}
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F8F8F8;">
+<tr>
+<td align="center" style="padding:32px 16px 56px;">
+<table role="presentation" width="600" class="container-600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;">
+
+<!-- Header band -->
+<tr>
+<td style="background-color:#EFEFEF;padding:16px 24px;border-radius:16px 16px 0 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td align="left" style="font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:14px;font-weight:500;color:#000000;letter-spacing:-0.2px;">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAANTSURBVHgBvVeNTdtAFH7vbCilUptuYFQihUhNzQQJEzSZoGSChgkIEwATNJ0AmICM4ISKWCKoHiGtVDUCn1/v2cRx4nNIcNRPgpzvnd/fvT8jLAnLsgrGVqEOQlaR0AYECwgKIRFhpNYeITkQYFeOf195njdahi8+K7hUsgzcaCPi51jgElDKdGTweOK5rgcvUYAtNl+/PVbLFuSBoDP/j3Hiec5oaQUiqzevFdGCNYAAPEkPBzpviPmNYrlsr1M4g3kxz2KxbGtoU6zb8nnoPBF7IIzyOeH8gvp/Gf2uCJUZRNRRK2e6FXnCsuxCSgEOuJTlBO3h4KZxP+jvKGbNWBFOu5AxdeO/aO9JMBwOb/vv792bJlBwNKsXWOYbeZx4jlxv4ubPlBG+2L+7c2ILLFtpPh4XslLLKtkWjGGUjHjeMzFI8fbpYYf5mPzAea5j+GjATOp4Tsg4s8B4ruPBkjDEBnuhKdgqBPyiPQSyBjlhZgS0qqZ1jgVhjGVddyCMWDC6kBP+FjgZQaxKu6wLFQU10GvQXsWlWeBrQwqaeqqoClXjP+lIciyuYE0Yuj+mWZIACrI5Da15Arssq3bngAdpQZZYpcPlApHOoIKA/wVEraFCezdhZbbX6xkCW7M7Yg94uvPGtqzCmrBbsmtaAoInKICelkY5B5EECOWhdj9AR0TNRKtCbXevkluJ4l7la1alZdlCbhmXujh4wuluuXIMOYSrlD7LonOtCbvhh71KRy0iLQlOwukW8HTSnrkuKFedEYne0HW6sEho0bbBDKqEcJgReJEYws6922s+teNpywzrtqQjuW10zYfgOs0EL4eDXkPHdLf88UJdeB2WgE9ih0t9WAd4oQSfh+yVPmjgN+77fiAaqUZC8jyTa0DZtCQLJWvSZ+JCJF+JdkIYj2ctPiRJHPALPF4p5VphXc/AIlpCuCf/ivbkeW4otdXMFsRzIfq+mohuHVgBKnNooXBlULLLpr4LeCwPyLyIA1B94QhCJyDxS2Dw7m7QP3+JAmEgo2goe2YMyvgwmfVEEsNBH1dVQGf5BNpmxAd5EuaUhJzg+FF3vp813CzshkO33+Z0UUy+w7LgohaO5tjhd5UhrbXMFtwdeXx/9py6vlU66T98qp4a9HCubgAAAABJRU5ErkJggg==" alt="GitHub" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:8px;border:0;" />github-logs
+</td>
+<td align="right" style="font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">
+Weekly
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<!-- Spectrum strip -->
+<tr>
+<td height="6" style="height:6px;line-height:6px;font-size:0;background:linear-gradient(90deg,#C679C4 0%,#FA3D1D 25%,#FFB005 50%,#E1E1FE 75%,#0358F7 100%);">&nbsp;</td>
+</tr>
+
+{% if status == 'no_activity' %}
+
+<!-- Empty state -->
+<tr>
+<td class="pad-mobile" style="padding:48px 40px;background-color:#FFFFFF;border-radius:0 0 16px 16px;">
+<p style="margin:0 0 20px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">
+Engineering summary &nbsp;&middot;&nbsp; {{ period }}
+</p>
+<p style="margin:0;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:18px;line-height:28px;font-weight:300;color:#636363;">
+No tracked GitHub activity for this week.
+</p>
+</td>
+</tr>
+
+{% else %}
+
+<!-- Hero card -->
+<tr>
+<td class="pad-mobile" style="padding:48px 40px 40px;background-color:#FFFFFF;">
+<p style="margin:0 0 20px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">
+Engineering summary &nbsp;&middot;&nbsp; {{ period }}
+</p>
+{% if report.headline %}
+<h1 class="display-headline" style="margin:0 0 20px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:40px;line-height:44px;font-weight:300;letter-spacing:-1.6px;color:#000000;">{{ report.headline }}</h1>
+{% endif %}
+{% if report.overview %}
+<p style="margin:0;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:16px;line-height:26px;font-weight:400;color:#636363;">{{ report.overview }}</p>
+{% endif %}
+</td>
+</tr>
+
+<!-- Metrics block -->
+{% set m = report.weekly_metrics or {} %}
+<tr>
+<td style="padding:0 40px 8px;background-color:#FFFFFF;" class="pad-mobile-h">
+<p style="margin:0 0 16px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">
+The week, in numbers
+</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #EFEFEF;border-bottom:1px solid #EFEFEF;">
+<tr>
+<td class="metric-cell" align="left" valign="top" style="padding:24px 0;width:25%;border-right:1px solid #EFEFEF;">
+<div class="metric-num" style="font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:48px;line-height:52px;font-weight:300;letter-spacing:-1.92px;color:#000000;">{{ m.commits or 0 }}</div>
+<div class="metric-label" style="margin-top:6px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">Commits</div>
+</td>
+<td class="metric-cell metric-cell-pad" align="left" valign="top" style="padding:24px 0 24px 16px;width:25%;border-right:1px solid #EFEFEF;">
+<div class="metric-num" style="font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:48px;line-height:52px;font-weight:300;letter-spacing:-1.92px;color:#000000;">{{ m.issues_opened or 0 }}</div>
+<div class="metric-label" style="margin-top:6px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">Issues opened</div>
+</td>
+<td class="metric-cell metric-cell-pad" align="left" valign="top" style="padding:24px 0 24px 16px;width:25%;border-right:1px solid #EFEFEF;">
+<div class="metric-num" style="font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:48px;line-height:52px;font-weight:300;letter-spacing:-1.92px;color:#000000;">{{ m.issues_closed or 0 }}</div>
+<div class="metric-label" style="margin-top:6px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">Issues closed</div>
+</td>
+<td class="metric-cell metric-cell-pad" align="left" valign="top" style="padding:24px 0 24px 16px;width:25%;">
+<div class="metric-num" style="font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:48px;line-height:52px;font-weight:300;letter-spacing:-1.92px;color:#000000;">{{ m.repositories_touched or 0 }}</div>
+<div class="metric-label" style="margin-top:6px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">Repos touched</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+{% if report.main_focus_areas %}
+<!-- Main focus areas -->
+<tr>
+<td class="pad-mobile" style="padding:40px 40px 8px;background-color:#FFFFFF;">
+<p style="margin:0 0 16px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">
+Main focus areas
+</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+{% for area in report.main_focus_areas %}
+<tr><td style="padding:6px 0;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:16px;line-height:24px;color:#000000;"><span style="color:#AEAEAE;">&mdash;&nbsp;&nbsp;</span>{{ area }}</td></tr>
+{% endfor %}
+</table>
+</td>
+</tr>
+{% endif %}
+
+{% if report.repositories %}
+<!-- Section heading: by repo -->
+<tr>
+<td class="pad-mobile" style="padding:48px 40px 24px;background-color:#FFFFFF;">
+<h2 class="heading" style="margin:0;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:28px;line-height:32px;font-weight:300;letter-spacing:-1.12px;color:#000000;">
+By repository
+</h2>
+</td>
+</tr>
+
+{% for repo in report.repositories %}
+<!-- Repo card -->
+<tr>
+<td class="pad-mobile-h" style="padding:0 40px 16px;background-color:#FFFFFF;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F8F8F8;border-radius:12px;">
+<tr>
+<td style="padding:24px 24px;">
+<div style="font-family:'DM Mono','SF Mono',Menlo,Consolas,monospace;font-size:13px;font-weight:500;color:#000000;letter-spacing:-0.2px;">{{ repo.name }}</div>
+{% if repo.summary %}
+<p style="margin:14px 0 0;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:24px;color:#636363;">{{ repo.summary }}</p>
+{% endif %}
+</td>
+</tr>
+</table>
+</td>
+</tr>
+{% endfor %}
+{% endif %}
+
+<!-- Next week -->
+<tr>
+<td class="pad-mobile" style="padding:32px 40px 48px;background-color:#FFFFFF;border-radius:0 0 16px 16px;">
+{% if report.next_week_priorities %}
+<p style="margin:0 0 16px;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#959595;">
+Next week
+</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+{% for item in report.next_week_priorities %}
+<tr><td style="padding:6px 0;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:16px;line-height:24px;color:#000000;"><span style="color:#AEAEAE;">{{ '%02d' | format(loop.index) }}&nbsp;&nbsp;</span>{{ item }}</td></tr>
+{% endfor %}
+</table>
+{% endif %}
+</td>
+</tr>
+
+{% endif %}
+
+<!-- Footer -->
+<tr>
+<td style="padding:32px 24px 8px;text-align:center;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:12px;line-height:18px;color:#959595;">
+<p style="margin:0 0 8px;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;font-size:11px;">
+Generated {{ generated_at }}
+</p>
+<p style="margin:0;">github-logs &middot; personal engineering log</p>
+</td>
+</tr>
+
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>

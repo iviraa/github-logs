@@ -9,7 +9,8 @@ from typing import Any
 from src.common.config import load
 from src.common.dates import utc_now, weekly_window
 from src.common.logger import get_logger, log
-from src.notifications.sns_notifier import SnsNotifier
+from src.notifications.email_renderer import EmailRenderer
+from src.notifications.ses_sender import SesSender
 from src.summaries.summary_generator import generate_weekly
 
 logger = get_logger(__name__)
@@ -39,7 +40,15 @@ def lambda_handler(event: dict[str, Any], _context: object) -> dict[str, Any]:
         end=result["end_date"],
     )
 
-    notifier = SnsNotifier(config.sns_topic_arn)
-    subject = f"Weekly Engineering Summary: {result['start_date']} - {result['end_date']}"
-    message_id = notifier.publish(subject, result["markdown"])
-    return {**{k: v for k, v in result.items() if k != "report"}, "sns_message_id": message_id}
+    rendered = EmailRenderer().render_weekly(result)
+    sender = SesSender(config.sender_email, region=config.region)
+    message_id = sender.send(
+        config.recipient_email,
+        rendered["subject"],
+        rendered["html"],
+        rendered["text"],
+    )
+    return {
+        **{k: v for k, v in result.items() if k != "report"},
+        "ses_message_id": message_id,
+    }

@@ -14,6 +14,7 @@ Use the provided commits, issues, and repository metadata.
 Return valid JSON only with this structure:
 
 {
+  "headline": "...",
   "overview": "...",
   "main_focus_areas": ["...", "..."],
   "repositories": [
@@ -36,11 +37,14 @@ Return valid JSON only with this structure:
 }
 
 Rules:
+- "headline" is one short sentence (max 70 characters), the punchline of the week.
+- "overview" is 2-3 sentences expanding on the headline with concrete detail.
 - Do not exaggerate.
 - Do not claim production impact unless present in the data.
 - Convert vague commit messages into clear but honest engineering descriptions.
 - Mention uncertainty when the commit message is unclear.
 - Keep resume bullets truthful and based only on the activity.
+- Do NOT use em dashes (—) anywhere. Use commas, periods, parentheses, or semicolons in their place. This applies to every string field, including overview, summary, and bullets.
 - Output only valid JSON. No prose, no code fences.
 """
 

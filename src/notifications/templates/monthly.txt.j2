@@ -1,0 +1,46 @@
+github-logs · monthly retro
+ENGINEERING RETROSPECTIVE · {{ period }}
+
+{% if status == 'no_activity' -%}
+No tracked GitHub activity for this month.
+{%- else -%}
+{% if report.headline %}{{ report.headline }}
+
+{% endif -%}
+{% set mom = report.month_over_month or {} -%}
+{% if mom.narrative %}{{ mom.narrative }}
+
+{% endif -%}
+
+{% if report.themes -%}
+THEMES
+{% for theme in report.themes %}{{ '%02d' | format(loop.index) }}. {{ theme }}
+{% endfor %}
+{% endif -%}
+
+MONTH OVER MONTH
+- This month     {{ mom.commits_this_month or 0 }} commits
+- Prior month    {{ mom.commits_prior_month or 0 }} commits
+{% set pct = mom.commit_change_pct|default(none) -%}
+{% if pct is not none -%}
+- Change         {{ '+' if (pct|int) >= 0 else '' }}{{ pct|int }}% vs. prior month
+{% endif %}
+
+{% if report.by_repo -%}
+BY REPOSITORY
+{% for repo in report.by_repo %}
+{{ repo.name }}
+{% if repo.summary %}{{ repo.summary }}
+{% endif -%}
+{% endfor %}
+{% endif -%}
+
+{% if report.next_month_focus -%}
+NEXT MONTH
+{% for item in report.next_month_focus %}{{ '%02d' | format(loop.index) }}. {{ item }}
+{% endfor %}{% endif -%}
+
+{% endif %}
+--
+Generated {{ generated_at }}
+github-logs · personal engineering log

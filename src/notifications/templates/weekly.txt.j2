@@ -1,0 +1,43 @@
+github-logs · weekly
+ENGINEERING SUMMARY · {{ period }}
+
+{% if status == 'no_activity' -%}
+No tracked GitHub activity for this week.
+{%- else -%}
+{% if report.headline %}{{ report.headline }}
+
+{% endif -%}
+{% if report.overview %}{{ report.overview }}
+
+{% endif -%}
+{% set m = report.weekly_metrics or {} -%}
+THE WEEK, IN NUMBERS
+- Commits        {{ m.commits or 0 }}
+- Issues opened  {{ m.issues_opened or 0 }}
+- Issues closed  {{ m.issues_closed or 0 }}
+- Repos touched  {{ m.repositories_touched or 0 }}
+
+{% if report.main_focus_areas -%}
+MAIN FOCUS AREAS
+{% for area in report.main_focus_areas %}- {{ area }}
+{% endfor %}
+{% endif -%}
+
+{% if report.repositories -%}
+BY REPOSITORY
+{% for repo in report.repositories %}
+{{ repo.name }}
+{% if repo.summary %}{{ repo.summary }}
+{% endif -%}
+{% endfor %}
+{% endif -%}
+
+{% if report.next_week_priorities -%}
+NEXT WEEK
+{% for item in report.next_week_priorities %}{{ '%02d' | format(loop.index) }}. {{ item }}
+{% endfor %}{% endif -%}
+
+{% endif %}
+--
+Generated {{ generated_at }}
+github-logs · personal engineering log
