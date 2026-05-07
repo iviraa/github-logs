@@ -7,6 +7,8 @@ runs Athena queries over a partitioned S3 data lake for longer-horizon
 analytics. Optionally creates GitHub issues for next-step items that the
 LLM judges worth tracking.
 
+![architecture](docs/screenshots/architecture.png)
+
 ## Stack
 
 | Layer | Service |
